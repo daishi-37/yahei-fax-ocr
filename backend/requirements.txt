@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+pydantic
+python-dotenv
+requests
+apscheduler
+email-validator
+notion-client
+aiofiles
