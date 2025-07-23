@@ -24,13 +24,15 @@ SMTP_PASSWORD = os.getenv("SMTP_PASSWORD")
 X_API_URL = os.getenv("X_API_URL", "https://api.x.com/upload")
 X_API_KEY = os.getenv("X_API_KEY")
 
-# Dify Settings (Mock)
-DIFY_API_URL = os.getenv("DIFY_API_URL", "https://api.dify.ai/ocr")
-DIFY_API_KEY = os.getenv("DIFY_API_KEY")
+# Dify Settings
+DIFY_BASE_URL = os.getenv("DIFY_BASE_URL", "http://p00-log001a.rsf-node001.com")
+DIFY_API_TOKEN = os.getenv("DIFY_API_TOKEN")
+DIFY_API_TOKEN_SEARCH = os.getenv("DIFY_API_TOKEN_SEARCH")
 
 # Notion Settings
 NOTION_TOKEN = os.getenv("NOTION_TOKEN")
 NOTION_DATABASE_ID = os.getenv("NOTION_DATABASE_ID")
+NOTION_CLIENT_DATABASE_ID = os.getenv("NOTION_CLIENT_DATABASE_ID")
 
 # File Storage
 STORAGE_PATH = os.getenv("STORAGE_PATH", "./storage")

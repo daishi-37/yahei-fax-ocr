@@ -20,3 +20,15 @@ async def get_latest_emails():
     """最新のメール一覧を取得"""
     emails = await email_service.get_latest_emails()
     return {"emails": emails}
+
+@router.get("/processed-ids")
+async def get_processed_ids():
+    """処理済みメールID情報を取得"""
+    info = await email_service.get_processed_ids_info()
+    return info
+
+@router.delete("/processed-ids")
+async def clear_processed_ids():
+    """処理済みメールIDをクリア（管理用）"""
+    result = await email_service.clear_processed_ids()
+    return result

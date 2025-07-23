@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from app.api.v1.emails import router as emails_router
+from app.api.v1.emails.router import router as emails_router
 
 api_v1_router = APIRouter()
 

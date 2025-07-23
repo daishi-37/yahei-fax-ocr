@@ -30,6 +30,9 @@ wheels/
 *.egg
 MANIFEST
 
+# Test files
+test_*.py
+
 # Virtual environments
 .env
 .venv
@@ -60,3 +63,6 @@ logs/
 
 # Reference directories
 orgin/
+
+# Storage directories
+storage/
