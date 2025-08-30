@@ -5,10 +5,14 @@ from app.services.dify_service import DifyService
 from app.services.notion_service import NotionService
 
 
-async def process_email_with_apis(email_data: dict, x_api_service: XApiService, dify_service: DifyService, notion_service: NotionService):
+async def process_email_with_apis(email_data: dict, x_api_service: XApiService, dify_service: DifyService, notion_service: NotionService, email_service: EmailService):
     """メールデータを外部APIで処理"""
     email_info = email_data["email_info"]
     pdf_files = email_data["pdf_files"]
+    email_id = email_data["email_id"]
+    
+    # 処理成功フラグ
+    all_pdfs_processed = True
     
     # 各PDFファイルを処理
     for pdf_file in pdf_files:
@@ -88,13 +92,28 @@ async def process_email_with_apis(email_data: dict, x_api_service: XApiService, 
             
             if notion_result.get("status") == "success":
                 print(f"✅ Notion登録成功: {notion_result.get('url')}")
+                
+                # 処理成功したPDFファイルを削除
+                if await email_service.delete_pdf_file(pdf_file):
+                    print(f"✅ PDFファイルを削除しました: {pdf_file}")
+                else:
+                    print(f"⚠️ PDFファイルの削除に失敗しました: {pdf_file}")
             else:
                 print(f"❌ Notion登録失敗: {notion_result.get('message')}")
+                all_pdfs_processed = False
             
             print(f"✅ PDF {pdf_file} の外部API処理が完了しました")
             
         except Exception as e:
             print(f"PDF {pdf_file} の外部API処理でエラーが発生しました: {e}")
+            all_pdfs_processed = False
+    
+    # すべてのPDFが正常に処理された場合、メールファイルも削除
+    if all_pdfs_processed and pdf_files:
+        if await email_service.delete_email_file(email_id):
+            print(f"✅ メールファイルを削除しました: {email_id}.eml")
+        else:
+            print(f"⚠️ メールファイルの削除に失敗しました: {email_id}.eml")
 
 
 def execute_email_polling_job():
@@ -123,7 +142,7 @@ def execute_email_polling_job():
         async def process_all_emails():
             for email_data in processed_emails:
                 if email_data["pdf_files"]:  # PDFファイルがある場合のみ処理
-                    await process_email_with_apis(email_data, x_api_service, dify_service, notion_service)
+                    await process_email_with_apis(email_data, x_api_service, dify_service, notion_service, email_service)
         
         # 外部API処理を実行
         if processed_emails:

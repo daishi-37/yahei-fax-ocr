@@ -11,6 +11,8 @@
 3. **X-API連携**: PDFファイルをX-APIにアップロード（モック実装）
 4. **Dify OCR処理**: PDFファイルのOCR処理（モック実装）
 5. **Notion連携**: 処理結果をNotionデータベースに登録
+6. **自動ファイル削除**: 処理完了後、PDFとメールファイルを自動削除（容量節約）
+7. **ストレージ管理**: 古いファイルの手動削除とストレージ統計情報の確認
 
 ## 開発環境
 
@@ -50,6 +52,13 @@ http://localhost:8000/api/docs
 - `GET /api/v1/emails/status` - メールポーリングの状態を取得
 - `POST /api/v1/emails/poll` - 手動でメールポーリングを実行
 - `GET /api/v1/emails/latest` - 最新のメール一覧を取得
+- `GET /api/v1/emails/processed-ids` - 処理済みメールID情報を取得
+- `DELETE /api/v1/emails/processed-ids` - 処理済みメールIDをクリア
+
+### ストレージ管理
+
+- `GET /api/v1/emails/storage/stats` - ストレージの統計情報を取得
+- `DELETE /api/v1/emails/storage/cleanup?days_old=7` - 指定日数以上前のファイルを削除
 
 ## 設定
 
@@ -97,6 +106,33 @@ backend/
 │           └── email_polling_job.py  # メールポーリングジョブ
 ├── .env.example                # 環境変数テンプレート
 └── requirements.txt            # 依存関係
+```
+
+## ストレージ管理
+
+### 自動削除機能
+
+処理が正常に完了したファイルは自動的に削除されます：
+- PDFファイル: Notion登録成功後に削除
+- メールファイル: すべてのPDFが正常に処理された後に削除
+
+### 手動クリーンアップ
+
+古いファイルを手動で削除する場合：
+
+```bash
+# 7日以上前のファイルを削除（デフォルト）
+curl -X DELETE http://localhost:8000/api/v1/emails/storage/cleanup
+
+# 30日以上前のファイルを削除
+curl -X DELETE http://localhost:8000/api/v1/emails/storage/cleanup?days_old=30
+```
+
+### ストレージ統計確認
+
+```bash
+# ストレージの使用状況を確認
+curl http://localhost:8000/api/v1/emails/storage/stats
 ```
 
 ## 今後の拡張予定

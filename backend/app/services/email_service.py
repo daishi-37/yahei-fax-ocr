@@ -324,3 +324,28 @@ class EmailService:
             return {"message": "処理済みIDをクリアしました"}
         except Exception as e:
             return {"error": f"処理済みIDクリアエラー: {str(e)}"}
+    
+    async def delete_email_file(self, email_id: str) -> bool:
+        """メールファイルを削除"""
+        try:
+            email_file_path = f"{settings.EMAIL_STORAGE_PATH}/{email_id}.eml"
+            if os.path.exists(email_file_path):
+                os.remove(email_file_path)
+                print(f"メールファイル削除: {email_file_path}")
+                return True
+            return False
+        except Exception as e:
+            print(f"メールファイル削除エラー: {e}")
+            return False
+    
+    async def delete_pdf_file(self, pdf_path: str) -> bool:
+        """PDFファイルを削除"""
+        try:
+            if os.path.exists(pdf_path):
+                os.remove(pdf_path)
+                print(f"PDFファイル削除: {pdf_path}")
+                return True
+            return False
+        except Exception as e:
+            print(f"PDFファイル削除エラー: {e}")
+            return False
