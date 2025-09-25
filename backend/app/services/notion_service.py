@@ -329,12 +329,8 @@ class NotionService:
                         _, client_abbreviation = await self.find_client_by_name(client_name)
                 else:
                     print(f"曖昧検索結果: {result.get('name', '該当なし')}")
-            elif vendor:
-                # 曖昧検索結果がない場合は、従来の検索方法を使用
-                client_id, client_abbreviation = await self.find_client_by_name(vendor)
-            
             # クライアントが見つかった場合はrelationを追加
-            if client_id:
+            if client_id and client_id != "0000":
                 properties["クライアント"] = {
                     "relation": [
                         {

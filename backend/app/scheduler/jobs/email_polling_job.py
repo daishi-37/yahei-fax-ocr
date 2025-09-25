@@ -143,6 +143,8 @@ def execute_email_polling_job():
             for email_data in processed_emails:
                 if email_data["pdf_files"]:  # PDFファイルがある場合のみ処理
                     await process_email_with_apis(email_data, x_api_service, dify_service, notion_service, email_service)
+                else:
+                    print(f"メールID {email_data['email_id']} にはPDFファイルが含まれていません。スキップします。")
         
         # 外部API処理を実行
         if processed_emails:
