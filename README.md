@@ -28,6 +28,10 @@
 # プロジェクトディレクトリに移動
 cd backend/
 
+# python仮想環境
+python -m venv .venv
+source .venv/bin/activate
+
 # 依存関係のインストール
 pip install -r requirements.txt
 
