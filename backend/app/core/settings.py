@@ -23,6 +23,7 @@ SMTP_PASSWORD = os.getenv("SMTP_PASSWORD")
 # X-API Settings (Mock)
 X_API_URL = os.getenv("X_API_URL", "https://api.x.com/upload")
 X_API_KEY = os.getenv("X_API_KEY")
+X_API_EXPIRE_HOURS = int(os.getenv("X_API_EXPIRE_HOURS", "744"))
 
 # Dify Settings
 DIFY_BASE_URL = os.getenv("DIFY_BASE_URL", "http://p00-log001a.rsf-node001.com")

@@ -21,7 +21,7 @@ async def process_email_with_apis(email_data: dict, x_api_service: XApiService, 
             
             # X-APIにアップロード
             print("X-APIにファイルをアップロード中...")
-            upload_result = await x_api_service.upload_pdf(pdf_file, expire_hours=48)
+            upload_result = await x_api_service.upload_pdf(pdf_file)
             
             if upload_result.get("status") == "success":
                 print("✅ X-APIアップロード成功!")

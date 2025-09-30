@@ -11,8 +11,8 @@ class XApiService:
     def __init__(self):
         self.base_url = settings.X_API_URL
         self.api_key = settings.X_API_KEY
-        
-    async def upload_file(self, file_path: str, expire_hours: int = 24) -> Dict[str, Any]:
+
+    async def upload_file(self, file_path: str, expire_hours: int = settings.X_API_EXPIRE_HOURS) -> Dict[str, Any]:
         """
         ファイルをX-APIにアップロード
         
